@@ -1,5 +1,20 @@
 # 91menu
-![91menu](https://user-images.githubusercontent.com/48242788/117937705-953e5d00-b306-11eb-916f-af1b60664689.png)
-`# make install`
 
-`$ man 91menu`
+<p align="center">
+
+<img alt="Preview of 91menu" src="/.github/preview.png"/>
+
+<br>
+
+Clone of <a href="https://github.com/LoupLobet/91menu">91menu</a>
+
+</p>
+
+## Install
+
+```C
+# make install
+$ man 91menu
+```
+
+
