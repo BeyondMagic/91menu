@@ -133,13 +133,13 @@ drw_map(Drw *drw, Window win, int x, int y, unsigned int w, unsigned int h)
 	XSync(drw->dpy, False);
 }
 
-void
+/*void
 drw_movepointer(Drw *drw, int x, int y)
 {
 	if (drw == NULL)
 		return;
 	XWarpPointer(drw->dpy, None, drw->root, 0, 0, 0, 0, x, y);
-}
+}*/
 
 void
 drw_resize(Drw *drw, int x, int y, unsigned int w, unsigned int h)

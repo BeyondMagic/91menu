@@ -33,7 +33,7 @@ void	 drw_free(Drw *);
 int	 drw_getpointer(Drw *, int *, int *);
 int	 drw_getpointersel(Drw *, int);
 void	 drw_map(Drw *, Window, int , int , unsigned int , unsigned int );
-void	 drw_movepointer(Drw *, int, int);
+//void	 drw_movepointer(Drw *, int, int);
 void	 drw_resize(Drw *, int, int, unsigned int, unsigned int);
 void	 drw_setfont(Drw *, Fnt);
 void	 drw_setscheme(Drw *, Clr *);

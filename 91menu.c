@@ -376,6 +376,7 @@ winsetup(XWindowAttributes *wa)
 	XClassHint xch = {"91menu", "91menu"};
 	XIM xim;
 	unsigned int w, h;
+	unsigned int dw = 0, dh = 0;
 	int i, x, y, sel;
 
 	/* compute window width/height */
@@ -408,13 +409,18 @@ winsetup(XWindowAttributes *wa)
 		y = wa->height - h - borderpx * 2;
 
 	/* use a predefined geometry */
-	if (geometry != NULL)
-		XParseGeometry(geometry, &x, &y, &w, &h);
+	if (geometry != NULL) {
+		XParseGeometry(geometry, &x, &y, &dw, &dh);
+		if (dw > w && dh > h) {
+			w = dw;
+			h = dh;
+		}
+	}
 
 	drw_resize(drw, x + borderpx, y + borderpx, w, h);
 
 	/* move pointer to the center of the first item */
-	drw_movepointer(drw, x + borderpx + w / 2, y + borderpx + h / itemnb / 2 + sel * (h / itemnb));
+//	drw_movepointer(drw, x + borderpx + w / 2, y + borderpx + h / itemnb / 2 + sel * (h / itemnb));
 
 	/* window setup */
 	swa.override_redirect = True;
