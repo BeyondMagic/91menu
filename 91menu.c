@@ -184,17 +184,20 @@ drawmenu(int nosel)
 		drw_drawrect(drw, 0, sel * (drw->h / itemnb), drw->w, drw->h / itemnb, SL);
 
 	for (i = 0; i < itemnb; i++) {
+		x = 1;
+
 		switch (textpos) {
-		case LEFT:
-			x = gappx;
-			break;
-		case CENTER:
-			x = (drw->w - items[i].extw) / 2;
-			break;
-		case RIGHT:
-			x = drw->w - items[i].extw - gappx;
-			break;
+			case LEFT:
+				x = gappx;
+				break;
+			case CENTER:
+				x = (drw->w - items[i].extw) / 2;
+				break;
+			case RIGHT:
+				x = drw->w - items[i].extw - gappx;
+				break;
 		}
+
 		y = i * (drw->h / itemnb) + 0.5 * drw->font.xfont->ascent +
 		    (drw->h / itemnb - drw->font.xfont->descent) / 2;
 		if (i == sel)
@@ -245,9 +248,12 @@ grabbuttons(void)
 	int i;
 
 	for (i = 1; i - 1 < sizeof(buttons) / sizeof(unsigned int); i++) {
-		XGrabButton(dpy, i, AnyModifier, root, True,
-		            ButtonPressMask | ButtonReleaseMask,
-		            GrabModeAsync, GrabModeAsync, None, None);
+		if (buttons[i - 1]) {
+			XUngrabButton(dpy, i, AnyModifier, root);
+			XGrabButton(dpy, i, AnyModifier, root, True,
+		                ButtonPressMask | ButtonReleaseMask,
+		                GrabModeAsync, GrabModeSync, None, None);
+		}
 	}
 }
 

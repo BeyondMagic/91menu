@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+#
+# Description:
+#  It runs xnotify, but with the current XResources colours.
+#
+# Dependencies:
+#  xnotify
+#  xgetres
+#
+# © BeyondMagic 2021
+
+91menu-o \
+  "$(xgetres 91menu.align)" \
+  -bg "$(xgetres 91menu.background)" \
+  -fg "$(xgetres 91menu.foreground)" \
+  -bd "$(xgetres 91menu.border)" \
+  -nv "$(xgetres 91menu.foreground.inverted)" \
+  -sl "$(xgetres 91menu.selection)" \
+  $@
