@@ -14,6 +14,8 @@
 #include "drw.h"
 #include "util.h"
 
+#define ISNOTEMPTY(string) strcmp(string, "") != 0
+
 #define _POSIX_X_SOURCE 200809L
 #define _XOPEN_SOURCE 700
 
@@ -180,8 +182,10 @@ drawmenu(int nosel)
 	/* draw background */
 	drw_drawrect(drw, 0, 0, drw->w, drw->h, BG);
 	/* draw selected item box */
-	if ((sel = drw_getpointersel(drw, itemnb)) >= 0 && !nosel)
-		drw_drawrect(drw, 0, sel * (drw->h / itemnb), drw->w, drw->h / itemnb, SL);
+	if ((sel = drw_getpointersel(drw, itemnb)) >= 0 && !nosel) {
+    if (ISNOTEMPTY(items[sel].text))
+  		drw_drawrect(drw, 0, sel * (drw->h / itemnb), drw->w, drw->h / itemnb, SL);
+  }
 
 	for (i = 0; i < itemnb; i++) {
 		x = 1;
@@ -198,8 +202,9 @@ drawmenu(int nosel)
 				break;
 		}
 
-		y = i * (drw->h / itemnb) + 0.5 * drw->font.xfont->ascent +
-		    (drw->h / itemnb - drw->font.xfont->descent) / 2;
+    y = i * (drw->h / itemnb) + 0.5 * drw->font.xfont->ascent +
+    (drw->h / itemnb - drw->font.xfont->descent) / 2;
+
 		if (i == sel)
 			drw_drawtext(drw, items[i].text, strlen(items[i].text), &font, &scheme[NV], x, y);
 		else
@@ -300,6 +305,7 @@ readstdin(void)
 		if ((items[i].text = strdup(buf)) == NULL)
 			error("strdup");
 		extw = 0;
+
 		getextw(items[i].text, strlen(items[i].text), &font, &extw);
 		items[i].extw = extw;
 	}
@@ -403,17 +409,18 @@ winsetup(XWindowAttributes *wa)
 
 	/* move the menu to center the first item on the pointer */
 	x -= borderpx + w / 2;
-	y -= borderpx + h / itemnb / 2 + sel * (h / itemnb);
+  y -= itemnb + sel;
+	//y -= borderpx + h / itemnb / 2 + sel * (h / itemnb);
 
 	/* corrects menu coordinates if the menu isn't completly visible on the screen */
 	if (x < 0)
-		x  = 0;
-	else if (x + w > wa->width)
-		x = wa->width - w - borderpx * 2;
+		x  = houtgap;
+	else if (x + w + houtgap > wa->width)
+		x = (wa->width - w - borderpx * 2) - houtgap;
 	if (y < 0)
-		y = 0;
-	else if (y + h > wa->height)
-		y = wa->height - h - borderpx * 2;
+		y = voutgap;
+	else if (y + h + voutgap > wa->height)
+		y = (wa->height - h - borderpx * 2) - voutgap;
 
 	/* use a predefined geometry */
 	if (geometry != NULL) {
